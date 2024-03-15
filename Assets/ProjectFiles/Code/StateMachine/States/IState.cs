@@ -1,4 +1,4 @@
-﻿namespace ProjectFiles.Code.State
+﻿namespace ProjectFiles.Code.StateMachine.States
 {
     public interface IState
     {
