@@ -1,5 +1,4 @@
-﻿using ProjectFiles.Code.State;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ProjectFiles.Code.StateMachine.States
 {

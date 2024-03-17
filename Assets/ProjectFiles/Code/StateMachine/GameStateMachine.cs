@@ -1,23 +1,26 @@
 using System;
 using System.Collections.Generic;
+using ProjectFiles.Code.Services.Factories.KeyboardItemFactory;
 using ProjectFiles.Code.StateMachine.States;
-using UnityEngine;
+using ProjectFiles.Code.UI;
 
-namespace ProjectFiles.Code.State
+namespace ProjectFiles.Code.StateMachine
 {
     public class GameStateMachine
     {
         private readonly Dictionary<Type, IState> _states;
         private IState _currentState;
-        
-        
 
-        public GameStateMachine(GameObject startPanel)
+        public GameStateMachine(
+            UIHandler uiHandler, IKeyboardItemFactory keyboardItemFactory)
         {
-            _states = new Dictionary<Type, IState>()
+            _states = new Dictionary<Type, IState>
             {
                 [typeof(BootstrapState)] = new BootstrapState(this),
-                [typeof(LoadResourcesState)] = new LoadResourcesState(this, startPanel)
+                [typeof(LoadResourcesState)] = new LoadResourcesState(this, 
+                    uiHandler.KeyboardTransform, keyboardItemFactory),
+                [typeof(MenuState)] = new MenuState(this, uiHandler.MenuPanel, uiHandler.PlayButton),
+                [typeof(GameState)] = new GameState(this, uiHandler.GamePanel)
             };
         }
 
