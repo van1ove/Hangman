@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using ProjectFiles.Code.Services.Factories.KeyboardItemFactory;
+using ProjectFiles.Code.Services.Factories.LetterItemFactory;
 using ProjectFiles.Code.StateMachine.States;
-using ProjectFiles.Code.UI;
+using ProjectFiles.Code.UI.Models;
 
 namespace ProjectFiles.Code.StateMachine
 {
@@ -12,15 +13,19 @@ namespace ProjectFiles.Code.StateMachine
         private IState _currentState;
 
         public GameStateMachine(
-            UIHandler uiHandler, IKeyboardItemFactory keyboardItemFactory)
+            UIHandler uiHandler, 
+            IKeyboardItemFactory keyboardItemFactory, ILetterItemFactory letterItemFactory)
         {
             _states = new Dictionary<Type, IState>
             {
                 [typeof(BootstrapState)] = new BootstrapState(this),
                 [typeof(LoadResourcesState)] = new LoadResourcesState(this, 
-                    uiHandler.KeyboardTransform, keyboardItemFactory),
-                [typeof(MenuState)] = new MenuState(this, uiHandler.MenuPanel, uiHandler.PlayButton),
-                [typeof(GameState)] = new GameState(this, uiHandler.GamePanel)
+                    uiHandler.KeyboardTransform, uiHandler.WordTransform,
+                    keyboardItemFactory, letterItemFactory),
+                [typeof(MenuState)] = new MenuState(this, 
+                    uiHandler.MenuPanel, uiHandler.PlayButton),
+                [typeof(LoadGameState)] = new LoadGameState(this, 
+                    uiHandler.GamePanel)
             };
         }
 

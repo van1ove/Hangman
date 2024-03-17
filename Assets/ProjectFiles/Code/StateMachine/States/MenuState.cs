@@ -9,7 +9,7 @@ namespace ProjectFiles.Code.StateMachine.States
         public MenuState(GameStateMachine gameStateMachine, GameObject menuPanel, Button playButton)
         {
             _menuPanel = menuPanel;
-            playButton.onClick.AddListener(gameStateMachine.Enter<GameState>);
+            playButton.onClick.AddListener(gameStateMachine.Enter<LoadGameState>);
         }
         public void Enter()
         {

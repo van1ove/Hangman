@@ -1,6 +1,7 @@
 ﻿using System;
 using ProjectFiles.Code.StateMachine;
 using ProjectFiles.Code.UI;
+using ProjectFiles.Code.UI.Models;
 using UnityEngine;
 using Zenject;
 
@@ -18,7 +19,7 @@ namespace ProjectFiles.Code.Installers
         private void BindUIHandler() => 
             Container.Bind<UIHandler>().FromInstance(uiHandler).AsSingle();
         private void BindStateMachine() => 
-            Container.Bind<GameStateMachine>().FromNew().AsSingle();
+            Container.Bind<GameStateMachine>().AsSingle();
 
         private void OnValidate()
         {

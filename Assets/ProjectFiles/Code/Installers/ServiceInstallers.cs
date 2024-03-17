@@ -1,4 +1,5 @@
 ﻿using ProjectFiles.Code.Services.Factories.KeyboardItemFactory;
+using ProjectFiles.Code.Services.Factories.WordFactory;
 using ProjectFiles.Code.Services.Loaders.AssetProvider;
 using Zenject;
 
@@ -10,6 +11,7 @@ namespace ProjectFiles.Code.Installers
         {
             BindAssetsProvider();
             BindKeyboardItemFactory();
+            BindLetterItemFactory();
         }
 
         private void BindAssetsProvider() => 
@@ -17,5 +19,8 @@ namespace ProjectFiles.Code.Installers
 
         private void BindKeyboardItemFactory() =>
             Container.BindInterfacesTo<KeyboardItemFactory>().AsSingle();
+        
+        private void BindLetterItemFactory() =>
+            Container.BindInterfacesTo<LetterItemFactory>().AsSingle();
     }
 }

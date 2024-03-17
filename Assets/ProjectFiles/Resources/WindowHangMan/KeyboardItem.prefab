@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 1142243756705741283}
   - component: {fileID: 8589204709447225972}
   - component: {fileID: 2753576100702804635}
-  - component: {fileID: -6679193020688865293}
+  - component: {fileID: -3108498362734143622}
   m_Layer: 0
   m_Name: KeyboardItem
   m_TagString: Untagged
@@ -245,7 +245,7 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &-6679193020688865293
+--- !u!114 &-3108498362734143622
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -257,4 +257,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16674724f05ebee449f2fd51d3387131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textField: {fileID: 3186779682231528895}
+  textField: {fileID: 3186779682231528895}

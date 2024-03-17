@@ -2,12 +2,12 @@
 
 namespace ProjectFiles.Code.StateMachine.States
 {
-    public class GameState : IState
+    public class LoadGameState : IState
     {
         private readonly GameStateMachine _gameStateMachine;
         private readonly GameObject _gamePanel;
 
-        public GameState(GameStateMachine gameStateMachine, GameObject gamePanel)
+        public LoadGameState(GameStateMachine gameStateMachine, GameObject gamePanel)
         {
             _gameStateMachine = gameStateMachine;
             _gamePanel = gamePanel;

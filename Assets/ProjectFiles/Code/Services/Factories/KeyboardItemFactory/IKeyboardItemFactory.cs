@@ -1,5 +1,4 @@
-﻿using ProjectFiles.Code.UI;
-using UnityEngine;
+﻿using ProjectFiles.Code.UI.Models;
 
 namespace ProjectFiles.Code.Services.Factories.KeyboardItemFactory
 {

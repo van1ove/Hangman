@@ -2,6 +2,7 @@
 {
     public class AssetsPaths
     {
-        public const string KeyboardItemPath = "UI/KeyboardItem";
+        public const string KeyboardItemPath = "WindowHangMan/KeyboardItem";
+        public const string LetterItemPath = "WindowHangMan/LetterItem";
     }
 }
