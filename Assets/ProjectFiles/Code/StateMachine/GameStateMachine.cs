@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using ProjectFiles.Code.Services.Factories.KeyboardItemFactory;
-using ProjectFiles.Code.Services.Factories.LetterItemFactory;
+using ProjectFiles.Code.Consts;
+using ProjectFiles.Code.Models;
 using ProjectFiles.Code.StateMachine.States;
 using ProjectFiles.Code.UI.Models;
 
@@ -13,19 +13,22 @@ namespace ProjectFiles.Code.StateMachine
         private IState _currentState;
 
         public GameStateMachine(
-            UIHandler uiHandler, 
-            IKeyboardItemFactory keyboardItemFactory, ILetterItemFactory letterItemFactory)
+            UIHandler uiHandler,
+            IComponentFactory componentFactory,
+            GameWords gameWords, GameDataModel gameDataModel)
         {
             _states = new Dictionary<Type, IState>
             {
-                [typeof(BootstrapState)] = new BootstrapState(this),
-                [typeof(LoadResourcesState)] = new LoadResourcesState(this, 
-                    uiHandler.KeyboardTransform, uiHandler.WordTransform,
-                    keyboardItemFactory, letterItemFactory),
-                [typeof(MenuState)] = new MenuState(this, 
-                    uiHandler.MenuPanel, uiHandler.PlayButton),
-                [typeof(LoadGameState)] = new LoadGameState(this, 
-                    uiHandler.GamePanel)
+                [typeof(LoadMenuPanelState)] = new LoadMenuPanelState(this, 
+                    uiHandler.MenuPanel),
+                [typeof(LoadGamePanelState)] = new LoadGamePanelState(this, 
+                    uiHandler.GamePanel),
+                [typeof(KeyboardState)] = new KeyboardState(this, 
+                    componentFactory, gameWords,
+                    uiHandler.GameStatesTransform, uiHandler.GameAreaTransform),
+                [typeof(ResultState)] = new ResultState(this, 
+                    componentFactory, gameDataModel, 
+                    uiHandler.GameStatesTransform, uiHandler.ResultText)
             };
         }
 

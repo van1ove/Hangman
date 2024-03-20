@@ -13,7 +13,7 @@ namespace ProjectFiles.Code.StateMachine
         
         private void Awake()
         {
-            _gameStateMachine.Enter<BootstrapState>();
+            _gameStateMachine.Enter<LoadMenuPanelState>();
         }
     }
 }

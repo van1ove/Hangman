@@ -4,7 +4,7 @@ namespace ProjectFiles.Code.ScriptableObjects.TextField
 {
     public class TextsCollectionModel
     {
-        public Dictionary<TextTarget, string> Pairs { get; } = new Dictionary<TextTarget, string>()
+        public readonly Dictionary<TextTarget, string> Pairs = new Dictionary<TextTarget, string>()
         {
             [TextTarget.Header] = TextTargetData.HeaderText,
             [TextTarget.Rules] = TextTargetData.RulesText,
