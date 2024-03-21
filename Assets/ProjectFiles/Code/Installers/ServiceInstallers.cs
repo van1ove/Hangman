@@ -1,4 +1,6 @@
-﻿using ProjectFiles.Code.Services.Factories;
+﻿using ProjectFiles.Code.Consts;
+using ProjectFiles.Code.Services.Factories;
+using ProjectFiles.Code.Services.GameWordsProvider;
 using ProjectFiles.Code.Services.Loaders.AssetProvider;
 using Zenject;
 
@@ -10,6 +12,7 @@ namespace ProjectFiles.Code.Installers
         {
             BindAssetsProvider();
             BindComponentFactory();
+            BindGameWordsProvider();
         }
 
         private void BindAssetsProvider() => 
@@ -17,5 +20,8 @@ namespace ProjectFiles.Code.Installers
 
         private void BindComponentFactory() =>
             Container.BindInterfacesTo<ComponentFactory>().AsSingle();
+
+        private void BindGameWordsProvider() =>
+            Container.BindInterfacesTo<GameWordsProvider>().AsSingle();
     }
 }

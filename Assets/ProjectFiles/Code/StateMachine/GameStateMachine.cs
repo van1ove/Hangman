@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using ProjectFiles.Code.Consts;
 using ProjectFiles.Code.Models;
+using ProjectFiles.Code.Services.GameWordsProvider;
 using ProjectFiles.Code.StateMachine.States;
 using ProjectFiles.Code.UI.Models;
 
@@ -15,7 +16,7 @@ namespace ProjectFiles.Code.StateMachine
         public GameStateMachine(
             UIHandler uiHandler,
             IComponentFactory componentFactory,
-            GameWords gameWords, GameDataModel gameDataModel)
+            IGameWordsProvider gameWordsProvider, GameDataModel gameDataModel)
         {
             _states = new Dictionary<Type, IState>
             {
@@ -24,7 +25,7 @@ namespace ProjectFiles.Code.StateMachine
                 [typeof(LoadGamePanelState)] = new LoadGamePanelState(this, 
                     uiHandler.GamePanel),
                 [typeof(KeyboardState)] = new KeyboardState(this, 
-                    componentFactory, gameWords,
+                    componentFactory, gameWordsProvider,
                     uiHandler.GameStatesTransform, uiHandler.GameAreaTransform),
                 [typeof(ResultState)] = new ResultState(this, 
                     componentFactory, gameDataModel, 

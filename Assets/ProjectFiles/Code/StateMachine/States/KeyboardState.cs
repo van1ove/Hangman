@@ -2,6 +2,7 @@
 using ProjectFiles.Code.Consts;
 using ProjectFiles.Code.Models.Entities;
 using ProjectFiles.Code.Models.PrefabModels;
+using ProjectFiles.Code.Services.GameWordsProvider;
 using UnityEngine;
 using Random = System.Random;
 
@@ -11,7 +12,7 @@ namespace ProjectFiles.Code.StateMachine.States
     {
         private readonly GameStateMachine _gameStateMachine;
         private readonly IComponentFactory _componentFactory;
-        private readonly GameWords _gameWords;
+        private readonly IGameWordsProvider _gameWordsProvider;
         private readonly Transform _keyboardTransform;
         private readonly Transform _gameAreaTransform;
         
@@ -20,11 +21,11 @@ namespace ProjectFiles.Code.StateMachine.States
         private Hangman _hangman;
 
         public KeyboardState(GameStateMachine gameStateMachine, IComponentFactory componentFactory, 
-            GameWords gameWords, Transform keyboardTransform, Transform gameAreaTransform)
+            IGameWordsProvider gameWordsProvider, Transform keyboardTransform, Transform gameAreaTransform)
         {
             _gameStateMachine = gameStateMachine;
             _componentFactory = componentFactory;
-            _gameWords = gameWords;
+            _gameWordsProvider = gameWordsProvider;
             _keyboardTransform = keyboardTransform;
             _gameAreaTransform = gameAreaTransform;
         }
@@ -43,13 +44,11 @@ namespace ProjectFiles.Code.StateMachine.States
             else
             {
                 _word.DestroyAllItems();
-                Debug.Log(_word.Items.Count);
                 SetLettersForWord(_word);
             }
 
             if (_hangman == null)
             {
-                
                 _hangman = Object.Instantiate(
                     _componentFactory.CreateComponentFromPrefab<Hangman>(), _gameAreaTransform);
                 _hangman.SubscribeToShowResult(_gameStateMachine.Enter<ResultState>);
@@ -92,10 +91,7 @@ namespace ProjectFiles.Code.StateMachine.States
         {
             LetterItem letterPrefab = _componentFactory.CreateComponentFromPrefab<LetterItem>();
             
-            Random r = new Random();
-            string wordStr = _gameWords.Words[r.Next(0, _gameWords.Words.Count)];
-            
-            foreach (char letter in wordStr)
+            foreach (char letter in _gameWordsProvider.LoadWord())
             {
                 letterPrefab.Initialize(letter);
                 LetterItem letterItem = Object.Instantiate(letterPrefab, word.transform);
@@ -110,9 +106,7 @@ namespace ProjectFiles.Code.StateMachine.States
         {
             if(_keyboard.AlphabetLettersStatus[item.Letter])
                 return;
-            
-            Debug.Log(item.Letter);
-            
+
             bool letterInWord = false;
             foreach (var letterItem in _word.Items.Where(letterItem => letterItem.Letter == item.Letter))
             {
