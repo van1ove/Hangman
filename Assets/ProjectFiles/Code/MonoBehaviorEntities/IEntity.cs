@@ -1,4 +1,4 @@
-﻿namespace ProjectFiles.Code.Models.Entities
+﻿namespace ProjectFiles.Code.MonoBehaviorEntities
 {
     public interface IEntity
     {

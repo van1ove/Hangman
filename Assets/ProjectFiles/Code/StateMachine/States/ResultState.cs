@@ -1,5 +1,6 @@
-﻿using ProjectFiles.Code.Models;
-using ProjectFiles.Code.Models.PrefabModels;
+﻿using ProjectFiles.Code.MonoBehaviorEntities;
+using ProjectFiles.Code.Services.DependencyFactory;
+using ProjectFiles.Code.Services.ProgressTracker;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,20 +9,20 @@ namespace ProjectFiles.Code.StateMachine.States
     public class ResultState : IState
     {
         private readonly GameStateMachine _gameStateMachine;
-        private readonly IComponentFactory _componentFactory;
-        private readonly GameDataModel _gameDataModel;
+        private readonly IDependencyFactory _dependencyFactory;
+        private readonly IProgressTracker _progressTracker;
         private readonly Transform _gameStateTransform;
         private readonly Text _resultText;
 
         private GameRestarter _gameRestarter;
         
-        public ResultState(GameStateMachine gameStateMachine, IComponentFactory componentFactory, 
-            GameDataModel gameDataModel,
+        public ResultState(GameStateMachine gameStateMachine, IDependencyFactory dependencyFactory, 
+            IProgressTracker progressTracker,
             Transform gameStateTransform, Text resultText)
         {
             _gameStateMachine = gameStateMachine;
-            _componentFactory = componentFactory;
-            _gameDataModel = gameDataModel;
+            _dependencyFactory = dependencyFactory;
+            _progressTracker = progressTracker;
             _gameStateTransform = gameStateTransform;
             _resultText = resultText;
         }
@@ -29,8 +30,10 @@ namespace ProjectFiles.Code.StateMachine.States
         public void Enter()
         {
             CheckGameRestarter();
-            _gameRestarter.SetResultText(_gameDataModel.IsPlayerWon);
-            _resultText.text = $"Выиграно: {_gameDataModel.VictoriesAmount}. Проиграно: {_gameDataModel.DefeatsAmount}.";
+            _gameRestarter.SetResultText(_progressTracker.GameDataModel.IsPlayerWon);
+            _resultText.text = 
+                $"Выиграно: {_progressTracker.GameDataModel.VictoriesAmount}. " +
+                $"Проиграно: {_progressTracker.GameDataModel.DefeatsAmount}. ";
         }
 
         public void Exit()
@@ -42,8 +45,7 @@ namespace ProjectFiles.Code.StateMachine.States
         {
             if (_gameRestarter == null)
             {
-                _gameRestarter = Object.Instantiate(
-                    _componentFactory.CreateComponentFromPrefab<GameRestarter>(), _gameStateTransform);
+                _gameRestarter = _dependencyFactory.CreateComponentFromPrefab<GameRestarter>(_gameStateTransform);
                 _gameRestarter.AddButtonListener(_gameStateMachine.Enter<KeyboardState>);
             }
             else

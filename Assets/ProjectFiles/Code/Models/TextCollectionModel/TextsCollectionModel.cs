@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ProjectFiles.Code.ScriptableObjects.TextField
+namespace ProjectFiles.Code.Models.TextCollectionModel
 {
     public class TextsCollectionModel
     {
@@ -21,9 +21,9 @@ namespace ProjectFiles.Code.ScriptableObjects.TextField
                 + "С каждой неправильной буквой на экране будет появляться элемент виселицы. " 
                 + "Когда виселица целеком появится на экране - то вы проиграли.\n"
                 + "Если вы угадаете какую-то букву из слова, то эта буква будет открыта";
-            public const string PlayerStatusData = "Выиграно: 0. Проиграно: 0.";
             public const string PlayButtonText = "ИГРАТЬ";
             public const string RestartButtonText = "ИГРАТЬ ЕЩЕ РАЗ";
+            public const string PlayerStatusData = "Выиграно: 0. Проиграно: 0.";
         }
     }
 }

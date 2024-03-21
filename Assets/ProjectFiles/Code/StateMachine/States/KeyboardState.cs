@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using ProjectFiles.Code.Consts;
-using ProjectFiles.Code.Models.Entities;
-using ProjectFiles.Code.Models.PrefabModels;
+using ProjectFiles.Code.Models.Consts;
+using ProjectFiles.Code.MonoBehaviorEntities;
+using ProjectFiles.Code.Services.ComponentFactory;
 using ProjectFiles.Code.Services.GameWordsProvider;
+using ProjectFiles.Code.Services.ProgressTracker;
 using UnityEngine;
-using Random = System.Random;
 
 namespace ProjectFiles.Code.StateMachine.States
 {
@@ -13,6 +13,8 @@ namespace ProjectFiles.Code.StateMachine.States
         private readonly GameStateMachine _gameStateMachine;
         private readonly IComponentFactory _componentFactory;
         private readonly IGameWordsProvider _gameWordsProvider;
+        private readonly IProgressTracker _progressTracker;
+        
         private readonly Transform _keyboardTransform;
         private readonly Transform _gameAreaTransform;
         
@@ -21,15 +23,29 @@ namespace ProjectFiles.Code.StateMachine.States
         private Hangman _hangman;
 
         public KeyboardState(GameStateMachine gameStateMachine, IComponentFactory componentFactory, 
-            IGameWordsProvider gameWordsProvider, Transform keyboardTransform, Transform gameAreaTransform)
+            IGameWordsProvider gameWordsProvider, IProgressTracker progressTracker,
+            Transform keyboardTransform, Transform gameAreaTransform)
         {
             _gameStateMachine = gameStateMachine;
             _componentFactory = componentFactory;
             _gameWordsProvider = gameWordsProvider;
+            _progressTracker = progressTracker;
             _keyboardTransform = keyboardTransform;
             _gameAreaTransform = gameAreaTransform;
         }
         public void Enter()
+        {
+            CheckKeyboard();
+            CheckWord();
+            CheckHangman();
+        }
+
+        public void Exit()
+        {
+            _keyboard.gameObject.SetActive(false);
+        }
+        
+        private void CheckKeyboard()
         {
             if (_keyboard == null) 
                 _keyboard = SpawnKeyboard(_componentFactory.CreateComponentFromPrefab<Keyboard>());
@@ -38,27 +54,30 @@ namespace ProjectFiles.Code.StateMachine.States
                 _keyboard.gameObject.SetActive(true);
                 _keyboard.ResetLettersStatus();
             }
+        }
 
+        private void CheckWord()
+        {
             if (_word == null)
+            {
                 _word = SpawnWord(_componentFactory.CreateComponentFromPrefab<Word>());
+                _progressTracker.SubscribeOnCheckWordCompleted(_word.AllLettersShown);
+            }
             else
             {
                 _word.DestroyAllItems();
                 SetLettersForWord(_word);
             }
-
-            if (_hangman == null)
-            {
-                _hangman = Object.Instantiate(
-                    _componentFactory.CreateComponentFromPrefab<Hangman>(), _gameAreaTransform);
-                _hangman.SubscribeToShowResult(_gameStateMachine.Enter<ResultState>);
-            }
-            _hangman.ResetHangman();
         }
 
-        public void Exit()
+        private void CheckHangman()
         {
-            _keyboard.gameObject.SetActive(false);
+            if (_hangman == null)
+            {
+                _hangman = Object.Instantiate(_componentFactory.CreateComponentFromPrefab<Hangman>(), _gameAreaTransform);
+                _progressTracker.SubscribeOnCheckHangmanCompleted(_hangman.CheckShownComponentsAmount);
+            }
+            _hangman.ResetHangman();
         }
         
         private Keyboard SpawnKeyboard(Keyboard keyboardExample)
@@ -98,7 +117,6 @@ namespace ProjectFiles.Code.StateMachine.States
                 letterItem.Initialize(letter);
                 word.AddItem(letterItem);
             }
-
             return word;
         }
 
@@ -116,8 +134,26 @@ namespace ProjectFiles.Code.StateMachine.States
             
             if(!letterInWord)
                 _hangman.ShowNextComponent();
-            
+
             _keyboard.AlphabetLettersStatus[item.Letter] = true;
+            CheckIsGameEnded();
+        }
+
+        private void CheckIsGameEnded()
+        {
+            if (_progressTracker.CheckWordCompletedInvoke())
+            {
+                _progressTracker.UpdateGameData(true);
+                _gameWordsProvider.DeleteWord();
+                _hangman.ResetHangman();
+                _gameStateMachine.Enter<ResultState>();
+            }
+
+            if (_progressTracker.CheckHangmanCompletedInvoke())
+            {
+                _progressTracker.UpdateGameData(false);
+                _gameStateMachine.Enter<ResultState>();
+            }
         }
     }
 }

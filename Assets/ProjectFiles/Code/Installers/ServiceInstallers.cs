@@ -1,7 +1,8 @@
-﻿using ProjectFiles.Code.Consts;
-using ProjectFiles.Code.Services.Factories;
+﻿using ProjectFiles.Code.Services.AssetProvider;
+using ProjectFiles.Code.Services.ComponentFactory;
+using ProjectFiles.Code.Services.DependencyFactory;
 using ProjectFiles.Code.Services.GameWordsProvider;
-using ProjectFiles.Code.Services.Loaders.AssetProvider;
+using ProjectFiles.Code.Services.ProgressTracker;
 using Zenject;
 
 namespace ProjectFiles.Code.Installers
@@ -10,9 +11,11 @@ namespace ProjectFiles.Code.Installers
     {
         public override void InstallBindings()
         {
+            BindGameWordsProvider();
+            BindProgressTracker();
             BindAssetsProvider();
             BindComponentFactory();
-            BindGameWordsProvider();
+            BindDependencyFactory();
         }
 
         private void BindAssetsProvider() => 
@@ -21,7 +24,13 @@ namespace ProjectFiles.Code.Installers
         private void BindComponentFactory() =>
             Container.BindInterfacesTo<ComponentFactory>().AsSingle();
 
+        private void BindDependencyFactory() =>
+            Container.BindInterfacesTo<DependencyFactory>().AsSingle();
+
         private void BindGameWordsProvider() =>
             Container.BindInterfacesTo<GameWordsProvider>().AsSingle();
+
+        private void BindProgressTracker() =>
+            Container.BindInterfacesTo<ProgressTracker>().AsSingle();
     }
 }

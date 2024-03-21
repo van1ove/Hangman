@@ -1,15 +1,12 @@
-﻿using System;
-using ProjectFiles.Code.Models.Entities;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace ProjectFiles.Code.Models.PrefabModels
+namespace ProjectFiles.Code.MonoBehaviorEntities
 {
     public class Hangman : MonoBehaviour, IEntity
     {
         private Transform[] _hangmanComponents;
         private int _nextComponentToShowIndex = 1;
 
-        private event Action ShowResult; 
         private void OnEnable()
         {
             _hangmanComponents = GetComponentsInChildren<Transform>();
@@ -30,11 +27,8 @@ namespace ProjectFiles.Code.Models.PrefabModels
         {
             _hangmanComponents[_nextComponentToShowIndex].gameObject.SetActive(true);
             _nextComponentToShowIndex++;
-            
-            if(_nextComponentToShowIndex == _hangmanComponents.Length)
-                ShowResult?.Invoke();
         }
 
-        public void SubscribeToShowResult(Action resultCallback) => ShowResult += resultCallback;
+        public bool CheckShownComponentsAmount() => _nextComponentToShowIndex == _hangmanComponents.Length;
     }
 }

@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
-using ProjectFiles.Code.Consts;
-using ProjectFiles.Code.Models;
+using ProjectFiles.Code.Services.ComponentFactory;
+using ProjectFiles.Code.Services.DependencyFactory;
 using ProjectFiles.Code.Services.GameWordsProvider;
+using ProjectFiles.Code.Services.ProgressTracker;
 using ProjectFiles.Code.StateMachine.States;
-using ProjectFiles.Code.UI.Models;
+using ProjectFiles.Code.UI;
 
 namespace ProjectFiles.Code.StateMachine
 {
@@ -16,7 +17,9 @@ namespace ProjectFiles.Code.StateMachine
         public GameStateMachine(
             UIHandler uiHandler,
             IComponentFactory componentFactory,
-            IGameWordsProvider gameWordsProvider, GameDataModel gameDataModel)
+            IDependencyFactory dependencyFactory,
+            IGameWordsProvider gameWordsProvider,
+            IProgressTracker progressTracker)
         {
             _states = new Dictionary<Type, IState>
             {
@@ -25,10 +28,10 @@ namespace ProjectFiles.Code.StateMachine
                 [typeof(LoadGamePanelState)] = new LoadGamePanelState(this, 
                     uiHandler.GamePanel),
                 [typeof(KeyboardState)] = new KeyboardState(this, 
-                    componentFactory, gameWordsProvider,
+                    componentFactory, gameWordsProvider, progressTracker,
                     uiHandler.GameStatesTransform, uiHandler.GameAreaTransform),
                 [typeof(ResultState)] = new ResultState(this, 
-                    componentFactory, gameDataModel, 
+                    dependencyFactory, progressTracker, 
                     uiHandler.GameStatesTransform, uiHandler.ResultText)
             };
         }

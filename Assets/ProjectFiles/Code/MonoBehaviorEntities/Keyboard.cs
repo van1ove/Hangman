@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using ProjectFiles.Code.Models.Entities;
 using UnityEngine;
 
-namespace ProjectFiles.Code.Models.PrefabModels
+namespace ProjectFiles.Code.MonoBehaviorEntities
 {
     public class Keyboard : MonoBehaviour, IEntity
     {

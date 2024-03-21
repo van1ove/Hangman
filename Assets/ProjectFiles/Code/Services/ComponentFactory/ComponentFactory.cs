@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using ProjectFiles.Code.Consts;
-using ProjectFiles.Code.Models.Entities;
-using ProjectFiles.Code.Models.PrefabModels;
-using ProjectFiles.Code.Services.Loaders.AssetProvider;
-using ProjectFiles.Code.UI.Models;
+using ProjectFiles.Code.Models.Consts;
+using ProjectFiles.Code.MonoBehaviorEntities;
+using ProjectFiles.Code.Services.AssetProvider;
 
-namespace ProjectFiles.Code.Services.Factories
+namespace ProjectFiles.Code.Services.ComponentFactory
 {
     public class ComponentFactory : IComponentFactory
     {
         private readonly IAssetProvider _assetProvider;
-        private readonly Dictionary<Type, string> _assetsDictionary = new Dictionary<Type, string>()
+        private readonly Dictionary<Type, string> _assetsDictionary = new Dictionary<Type, string>
         {
             [typeof(KeyboardItem)] = AssetsPaths.KeyboardItemPath,
             [typeof(LetterItem)] = AssetsPaths.LetterItemPath,
@@ -26,9 +24,7 @@ namespace ProjectFiles.Code.Services.Factories
             _assetProvider = assetProvider;
         }
         
-        public T CreateComponentFromPrefab<T>() where T : IEntity
-        {
-            return _assetProvider.LoadAsset<T>(_assetsDictionary[typeof(T)]);
-        }
+        public T CreateComponentFromPrefab<T>() where T : IEntity =>
+            _assetProvider.LoadAsset<T>(_assetsDictionary[typeof(T)]);
     }
 }

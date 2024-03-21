@@ -1,6 +1,6 @@
-﻿using ProjectFiles.Code.Consts;
-using ProjectFiles.Code.Models;
-using ProjectFiles.Code.ScriptableObjects.TextField;
+﻿using ProjectFiles.Code.Models;
+using ProjectFiles.Code.Models.Consts;
+using ProjectFiles.Code.Models.TextCollectionModel;
 using Zenject;
 
 namespace ProjectFiles.Code.Installers

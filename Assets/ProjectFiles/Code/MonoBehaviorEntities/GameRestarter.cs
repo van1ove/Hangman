@@ -1,9 +1,8 @@
-﻿using ProjectFiles.Code.Models.Entities;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace ProjectFiles.Code.Models.PrefabModels
+namespace ProjectFiles.Code.MonoBehaviorEntities
 {
     public class GameRestarter : MonoBehaviour, IEntity
     {

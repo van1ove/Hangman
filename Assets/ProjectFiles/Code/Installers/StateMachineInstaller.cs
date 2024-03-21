@@ -1,7 +1,5 @@
-﻿using System;
-using ProjectFiles.Code.StateMachine;
+﻿using ProjectFiles.Code.StateMachine;
 using ProjectFiles.Code.UI;
-using ProjectFiles.Code.UI.Models;
 using UnityEngine;
 using Zenject;
 

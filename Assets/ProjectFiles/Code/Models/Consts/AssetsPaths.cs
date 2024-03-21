@@ -1,4 +1,4 @@
-﻿namespace ProjectFiles.Code.Consts
+﻿namespace ProjectFiles.Code.Models.Consts
 {
     public class AssetsPaths
     {

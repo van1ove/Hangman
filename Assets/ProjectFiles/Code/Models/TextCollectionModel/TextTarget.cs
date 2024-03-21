@@ -1,4 +1,4 @@
-﻿namespace ProjectFiles.Code.ScriptableObjects.TextField
+﻿namespace ProjectFiles.Code.Models.TextCollectionModel
 {
     public enum TextTarget
     {

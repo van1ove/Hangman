@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace ProjectFiles.Code.UI.Models
+namespace ProjectFiles.Code.UI
 {
     public class UIHandler : MonoBehaviour
     {

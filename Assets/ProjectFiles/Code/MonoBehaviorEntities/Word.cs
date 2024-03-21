@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
-using ProjectFiles.Code.Models.Entities;
+using System.Linq;
 using UnityEngine;
 
-namespace ProjectFiles.Code.Models.PrefabModels
+namespace ProjectFiles.Code.MonoBehaviorEntities
 {
     public class Word : MonoBehaviour, IEntity
     {
         public List<LetterItem> Items { get; private set; } = new List<LetterItem>();
 
-        public void AddItem(LetterItem item) =>
-            Items.Add(item);
+        public void AddItem(LetterItem item) => Items.Add(item);
 
+        public bool AllLettersShown() => Items.Count(item => !item.LetterShown) == 0;
+        
         public void DestroyAllItems()
         {
             foreach (Transform itemTransform in GetComponentsInChildren<Transform>())

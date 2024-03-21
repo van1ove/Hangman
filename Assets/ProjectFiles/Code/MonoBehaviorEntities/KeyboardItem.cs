@@ -2,16 +2,19 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ProjectFiles.Code.Models.Entities
+namespace ProjectFiles.Code.MonoBehaviorEntities
 {
     public class KeyboardItem : MonoBehaviour, IEntity
     {
-        public char Letter { get; private set; }
-        
         [SerializeField] private Button button;
         [SerializeField] private Text textField;
-
+        public char Letter { get; private set; }
         private event Action<KeyboardItem> ButtonClicked;
+        
+        private void OnEnable()
+        {
+            AddButtonListener();
+        }
         
         public void Initialize(char letter)
         {
@@ -20,11 +23,7 @@ namespace ProjectFiles.Code.Models.Entities
         }
         
         public void SubscribeOnButton(Action<KeyboardItem> callback) => ButtonClicked += callback;
-
-        private void OnEnable()
-        {
-            AddButtonListener();
-        }
+        
 
         private void AddButtonListener() => button.onClick.AddListener(InvokeButtonClicked);
 
