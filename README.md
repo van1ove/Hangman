@@ -1,1 +1,1 @@
-# HangmanTestTask
+# Hangman Game
